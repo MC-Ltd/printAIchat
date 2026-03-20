@@ -1,0 +1,29 @@
+{
+  "name": "printaichat",
+  "version": "1.0.0",
+  "description": "Browser extension that modifies AI chat pages for printing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build.js --watch --browser=chrome",
+    "build": "node scripts/build.js --browser=all",
+    "build:chrome": "node scripts/build.js --browser=chrome",
+    "build:firefox": "node scripts/build.js --browser=firefox",
+    "build:edge": "node scripts/build.js --browser=edge",
+    "zip": "node scripts/build.js --browser=all --zip",
+    "zip:chrome": "node scripts/build.js --browser=chrome --zip",
+    "validate": "node scripts/validate-manifest.js",
+    "icons": "node scripts/generate-icons.js",
+    "lint": "eslint src/ scripts/",
+    "lint:fix": "eslint src/ scripts/ --fix"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "sharp": "^0.34.0",
+    "archiver": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  }
+}

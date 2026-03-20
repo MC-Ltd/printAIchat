@@ -1,0 +1,97 @@
+{
+  "extensionName": {
+    "message": "printAIchat",
+    "description": "Назва розширення"
+  },
+  "extensionShortName": {
+    "message": "printAIchat",
+    "description": "Коротка назва (макс 12 символів)"
+  },
+  "extensionDescription": {
+    "message": "Чистий макет для друку AI-чат розмов. Правила синхронізуються з GitHub.",
+    "description": "Опис розширення для маркетплейсу"
+  },
+  "popupEnabledGlobal": {
+    "message": "Увімкнути розширення",
+    "description": "Мітка глобального перемикача"
+  },
+  "popupEnabledSite": {
+    "message": "Увімкнути на цьому сайті",
+    "description": "Мітка перемикача для сайту"
+  },
+  "popupLastSync": {
+    "message": "Остання синхронізація:",
+    "description": "Мітка перед часом синхронізації"
+  },
+  "popupSyncNow": {
+    "message": "Синхронізувати",
+    "description": "Текст кнопки синхронізації"
+  },
+  "popupSyncing": {
+    "message": "Синхронізація...",
+    "description": "Статус синхронізації в процесі"
+  },
+  "popupSyncSuccess": {
+    "message": "Синхронізовано успішно",
+    "description": "Статус успішної синхронізації"
+  },
+  "popupSyncError": {
+    "message": "Помилка синхронізації. Використовується кеш.",
+    "description": "Статус помилки синхронізації"
+  },
+  "popupNever": {
+    "message": "Ніколи",
+    "description": "Коли синхронізації ще не було"
+  },
+  "popupLanguage": {
+    "message": "Мова",
+    "description": "Мітка вибору мови"
+  },
+  "popupOpenSettings": {
+    "message": "Відкрити налаштування",
+    "description": "Посилання на сторінку налаштувань"
+  },
+  "optionsTitle": { "message": "Налаштування printAIchat" },
+  "optionsSectionGeneral": { "message": "Загальне" },
+  "optionsEnabledGlobal": { "message": "Увімкнути розширення глобально" },
+  "optionsLanguage": { "message": "Мова інтерфейсу" },
+  "optionsSyncInterval": { "message": "Інтервал синхронізації" },
+  "optionsSyncIntervalUnit": { "message": "годин" },
+  "optionsSectionDomains": { "message": "Вимкнені сайти" },
+  "optionsDomainsDesc": { "message": "Розширення вимкнено на цих доменах." },
+  "optionsAddDomain": { "message": "Додати" },
+  "optionsRemove": { "message": "Видалити" },
+  "optionsNoDisabledDomains": { "message": "Немає вимкнених доменів" },
+  "optionsInvalidDomain": { "message": "Невірний формат домену" },
+  "optionsDomainAdded": { "message": "Домен додано" },
+  "optionsSectionRules": { "message": "Правила з GitHub" },
+  "optionsNoRules": { "message": "Правила ще не завантажено з GitHub." },
+  "optionsRulesCount": { "message": "Завантажено правил:" },
+  "optionsSectionCustomRules": { "message": "Кастомні правила" },
+  "optionsCustomRulesDesc": {
+    "message": "JSON масив правил. Має пріоритет над правилами GitHub."
+  },
+  "optionsValidate": { "message": "Перевірити JSON" },
+  "optionsSave": { "message": "Зберегти" },
+  "optionsValidOk": { "message": "JSON валідний" },
+  "optionsSectionSync": { "message": "Синхронізація" },
+  "optionsLastSync": { "message": "Остання синхронізація:" },
+  "optionsSyncNow": { "message": "Синхронізувати зараз" },
+  "optionsSyncing": { "message": "Синхронізація..." },
+  "optionsSyncSuccess": { "message": "Синхронізовано успішно" },
+  "optionsSectionBackup": { "message": "Резервна копія" },
+  "optionsExport": { "message": "Експортувати налаштування" },
+  "optionsImport": { "message": "Імпортувати налаштування" },
+  "optionsExported": { "message": "Налаштування експортовано" },
+  "optionsImported": { "message": "Налаштування імпортовано" },
+  "optionsSectionDanger": { "message": "Небезпечна зона" },
+  "optionsResetDesc": {
+    "message": "Скинути всі налаштування та кеш до дефолту."
+  },
+  "optionsReset": { "message": "Скинути до дефолту" },
+  "optionsResetConfirm": {
+    "message": "Скинути всі налаштування? Це незворотньо."
+  },
+  "optionsResetDone": { "message": "Налаштування скинуто" },
+  "optionsSaved": { "message": "Збережено" }
+}

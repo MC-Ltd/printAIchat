@@ -1,0 +1,25 @@
+/* src/content/content.css */
+
+/* Клас для приховування елементів через правила */
+.printaichat-hidden {
+  display: none !important;
+}
+
+/* Print-friendly базові стилі (активуються при друку) */
+@media print {
+  .printaichat-hidden {
+    display: none !important;
+  }
+
+  /* Приховати все що не потрібно при друку */
+  .printaichat-no-print {
+    display: none !important;
+  }
+
+  /* Забезпечити видимість контенту */
+  .printaichat-print-visible {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}

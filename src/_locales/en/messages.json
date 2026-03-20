@@ -1,0 +1,99 @@
+{
+  "extensionName": {
+    "message": "printAIchat",
+    "description": "Extension name"
+  },
+  "extensionShortName": {
+    "message": "printAIchat",
+    "description": "Short name (max 12 chars)"
+  },
+  "extensionDescription": {
+    "message": "Clean print layout for AI chat conversations. Rules sync from GitHub.",
+    "description": "Extension description for store listing"
+  },
+  "popupEnabledGlobal": {
+    "message": "Enable extension",
+    "description": "Global enable toggle label"
+  },
+  "popupEnabledSite": {
+    "message": "Enable on this site",
+    "description": "Per-site enable toggle label"
+  },
+  "popupLastSync": {
+    "message": "Last sync:",
+    "description": "Label before sync timestamp"
+  },
+  "popupSyncNow": {
+    "message": "Sync now",
+    "description": "Sync button text"
+  },
+  "popupSyncing": {
+    "message": "Syncing...",
+    "description": "Sync in progress status"
+  },
+  "popupSyncSuccess": {
+    "message": "Synced successfully",
+    "description": "Sync success status"
+  },
+  "popupSyncError": {
+    "message": "Sync failed. Using cached data.",
+    "description": "Sync error status"
+  },
+  "popupNever": {
+    "message": "Never",
+    "description": "Shown when extension was never synced"
+  },
+  "popupLanguage": {
+    "message": "Language",
+    "description": "Language selector label"
+  },
+  "popupOpenSettings": {
+    "message": "Open settings",
+    "description": "Link to options page"
+  },
+  "optionsTitle": { "message": "printAIchat Settings" },
+  "optionsSectionGeneral": { "message": "General" },
+  "optionsEnabledGlobal": { "message": "Enable extension globally" },
+  "optionsLanguage": { "message": "Interface language" },
+  "optionsSyncInterval": { "message": "Sync interval" },
+  "optionsSyncIntervalUnit": { "message": "hours" },
+  "optionsSectionDomains": { "message": "Disabled sites" },
+  "optionsDomainsDesc": {
+    "message": "Extension is disabled on these domains."
+  },
+  "optionsAddDomain": { "message": "Add" },
+  "optionsRemove": { "message": "Remove" },
+  "optionsNoDisabledDomains": { "message": "No disabled domains" },
+  "optionsInvalidDomain": { "message": "Invalid domain format" },
+  "optionsDomainAdded": { "message": "Domain added" },
+  "optionsSectionRules": { "message": "GitHub rules" },
+  "optionsNoRules": { "message": "No rules loaded from GitHub yet." },
+  "optionsRulesCount": { "message": "Rules loaded:" },
+  "optionsSectionCustomRules": { "message": "Custom rules" },
+  "optionsCustomRulesDesc": {
+    "message": "JSON array of rules. Overrides GitHub rules."
+  },
+  "optionsValidate": { "message": "Validate JSON" },
+  "optionsSave": { "message": "Save" },
+  "optionsValidOk": { "message": "JSON is valid" },
+  "optionsSectionSync": { "message": "Synchronization" },
+  "optionsLastSync": { "message": "Last sync:" },
+  "optionsSyncNow": { "message": "Sync now" },
+  "optionsSyncing": { "message": "Syncing..." },
+  "optionsSyncSuccess": { "message": "Synced successfully" },
+  "optionsSectionBackup": { "message": "Backup" },
+  "optionsExport": { "message": "Export settings" },
+  "optionsImport": { "message": "Import settings" },
+  "optionsExported": { "message": "Settings exported" },
+  "optionsImported": { "message": "Settings imported" },
+  "optionsSectionDanger": { "message": "Danger zone" },
+  "optionsResetDesc": {
+    "message": "Reset all settings and cached data to defaults."
+  },
+  "optionsReset": { "message": "Reset to defaults" },
+  "optionsResetConfirm": {
+    "message": "Reset all settings to defaults? This cannot be undone."
+  },
+  "optionsResetDone": { "message": "Settings reset to defaults" },
+  "optionsSaved": { "message": "Saved" }
+}

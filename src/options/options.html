@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="optionsTitle"></title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="options">
+      <header class="options__header">
+        <img src="../assets/icons/icon-48.png" alt="" class="options__logo" />
+        <div>
+          <h1 class="options__title" data-i18n="optionsTitle"></h1>
+          <p class="options__version" id="ext-version"></p>
+        </div>
+      </header>
+
+      <main class="options__main">
+        <!-- ── Загальні налаштування ── -->
+        <section class="card">
+          <h2 class="card__title" data-i18n="optionsSectionGeneral"></h2>
+
+          <div class="field">
+            <div class="field__row">
+              <label
+                class="field__label"
+                data-i18n="optionsEnabledGlobal"
+              ></label>
+              <label class="toggle">
+                <input type="checkbox" id="opt-enabled-global" />
+                <span class="toggle__slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" data-i18n="optionsLanguage"></label>
+            <select id="opt-language" class="select">
+              <option value="en">English</option>
+              <option value="uk">Українська</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" data-i18n="optionsSyncInterval"></label>
+            <div class="field__row field__row--gap">
+              <input
+                type="number"
+                id="opt-sync-interval"
+                class="input input--sm"
+                min="1"
+                max="168"
+                step="1"
+              />
+              <span
+                class="field__unit"
+                data-i18n="optionsSyncIntervalUnit"
+              ></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Вимкнені домени ── -->
+        <section class="card">
+          <h2 class="card__title" data-i18n="optionsSectionDomains"></h2>
+          <p class="card__desc" data-i18n="optionsDomainsDesc"></p>
+          <ul id="disabled-domains-list" class="domain-list"></ul>
+          <div class="field__row field__row--gap" style="margin-top: 12px">
+            <input
+              type="text"
+              id="new-domain-input"
+              class="input"
+              placeholder="chat.openai.com"
+            />
+            <button
+              id="btn-add-domain"
+              class="btn btn--secondary"
+              data-i18n="optionsAddDomain"
+            ></button>
+          </div>
+        </section>
+
+        <!-- ── Правила з GitHub ── -->
+        <section class="card">
+          <h2 class="card__title" data-i18n="optionsSectionRules"></h2>
+          <p class="card__desc" id="rules-count"></p>
+          <div id="rules-list" class="rules-list"></div>
+        </section>
+
+        <!-- ── Кастомні правила ── -->
+        <section class="card">
+          <h2 class="card__title" data-i18n="optionsSectionCustomRules"></h2>
+          <p class="card__desc" data-i18n="optionsCustomRulesDesc"></p>
+          <textarea
+            id="custom-rules-input"
+            class="textarea"
+            rows="10"
+            spellcheck="false"
+          ></textarea>
+          <div id="custom-rules-error" class="error-msg" hidden></div>
+          <div class="field__row field__row--gap" style="margin-top: 10px">
+            <button
+              id="btn-validate-custom"
+              class="btn btn--secondary"
+              data-i18n="optionsValidate"
+            ></button>
+            <button
+              id="btn-save-custom"
+              class="btn btn--primary"
+              data-i18n="optionsSave"
+            ></button>
+          </div>
+        </section>
+
+        <!-- ── Синхронізація ── -->
+        <section class="card">
+          <h2 class="card__title" data-i18n="optionsSectionSync"></h2>
+          <div class="sync-info">
+            <span data-i18n="optionsLastSync"></span>
+            <strong id="opt-last-sync">—</strong>
+          </div>
+          <div class="field__row field__row--gap" style="margin-top: 12px">
+            <button
+              id="btn-sync-now"
+              class="btn btn--primary"
+              data-i18n="optionsSyncNow"
+            ></button>
+            <div id="opt-sync-status" class="sync-status" hidden></div>
+          </div>
+        </section>
+
+        <!-- ── Експорт / Імпорт ── -->
+        <section class="card">
+          <h2 class="card__title" data-i18n="optionsSectionBackup"></h2>
+          <div class="field__row field__row--gap">
+            <button
+              id="btn-export"
+              class="btn btn--secondary"
+              data-i18n="optionsExport"
+            ></button>
+            <button
+              id="btn-import"
+              class="btn btn--secondary"
+              data-i18n="optionsImport"
+            ></button>
+            <input type="file" id="import-file" accept=".json" hidden />
+          </div>
+        </section>
+
+        <!-- ── Небезпечна зона ── -->
+        <section class="card card--danger">
+          <h2 class="card__title" data-i18n="optionsSectionDanger"></h2>
+          <p class="card__desc" data-i18n="optionsResetDesc"></p>
+          <button
+            id="btn-reset"
+            class="btn btn--danger"
+            data-i18n="optionsReset"
+          ></button>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="options.js"></script>
+  </body>
+</html>

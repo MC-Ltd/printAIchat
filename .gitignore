@@ -1,0 +1,40 @@
+# Build outputs
+dist/
+build/
+*.zip
+*.crx
+*.xpi
+
+# Node
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+
+# Keys & secrets (ВАЖЛИВО: ніколи не комітити!)
+*.pem
+*.key
+key.json
+secrets.json
+
+# Temp
+*.tmp
+*.temp
+.cache/
+
+# web-ext artifacts
+web-ext-artifacts/
+
+# 5.2 Структура файлів для завантаження в браузер
+# Dev-only manifest copy
+src/manifest.json

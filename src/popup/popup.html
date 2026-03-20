@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="extensionName"></title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="popup">
+      <!-- Header -->
+      <header class="popup__header">
+        <img src="../assets/icons/icon-32.png" alt="" class="popup__logo" />
+        <span class="popup__title" data-i18n="extensionName"></span>
+      </header>
+
+      <!-- Global toggle -->
+      <section class="popup__section">
+        <div class="toggle-row">
+          <label
+            class="toggle-row__label"
+            data-i18n="popupEnabledGlobal"
+          ></label>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-global" />
+            <span class="toggle__slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Current site toggle -->
+      <section class="popup__section">
+        <div class="toggle-row">
+          <div>
+            <label
+              class="toggle-row__label"
+              data-i18n="popupEnabledSite"
+            ></label>
+            <div class="toggle-row__domain" id="current-domain">—</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-site" />
+            <span class="toggle__slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Sync -->
+      <section class="popup__section">
+        <div class="sync-row">
+          <div class="sync-row__info">
+            <span data-i18n="popupLastSync"></span>
+            <span id="last-sync-time" class="sync-row__time">—</span>
+          </div>
+          <button
+            id="btn-sync"
+            class="btn btn--primary"
+            data-i18n="popupSyncNow"
+          ></button>
+        </div>
+        <div id="sync-status" class="sync-status" hidden></div>
+      </section>
+
+      <!-- Language -->
+      <section class="popup__section">
+        <div class="toggle-row">
+          <label class="toggle-row__label" data-i18n="popupLanguage"></label>
+          <select id="select-language" class="select">
+            <option value="en">English</option>
+            <option value="uk">Українська</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="popup__footer">
+        <a id="link-options" href="#" data-i18n="popupOpenSettings"></a>
+      </footer>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
