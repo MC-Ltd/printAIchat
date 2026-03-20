@@ -26,7 +26,8 @@ const BROWSER =
 const DO_ZIP = args.includes("--zip");
 const WATCH = args.includes("--watch");
 
-const BROWSERS = BROWSER === "all" ? ["chrome", "firefox", "edge"] : [BROWSER];
+// const BROWSERS = BROWSER === "all" ? ["chrome", "firefox", "edge"] : [BROWSER];
+const BROWSERS = BROWSER === "all" ? ["chrome", "edge"] : [BROWSER];
 
 // ── Утиліти ──────────────────────────────────────────────────────────────────
 
