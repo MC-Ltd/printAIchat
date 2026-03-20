@@ -1,25 +1,316 @@
 # .github/workflows/build.yml
-name: Build
+#
+# CI/CD pipeline для printAIchat
+# Два jobs:
+#   1. build  — завжди запускається (push, PR, tag)
+#   2. release — тільки при тегу v*.*.*
+#
+# Документація GitHub Actions:
+#   https://docs.github.com/en/actions
 
+name: Build & Release
+
+# ─────────────────────────────────────────────
+# ТРИГЕРИ
+# ─────────────────────────────────────────────
 on:
+  # Push у гілки main або develop
   push:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
+    # Тег у форматі v1.0.0, v2.3.4-beta, тощо
+    tags:
+      - "v*.*.*"
+
+  # Pull Request у main (тільки build, не release)
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
+# ─────────────────────────────────────────────
+# ГЛОБАЛЬНІ ДОЗВОЛИ
+# За замовчуванням contents: read.
+# Job release потребує contents: write для
+# створення GitHub Release та завантаження assets.
+# Ми встановлюємо мінімальні права на рівні
+# workflow і розширюємо тільки там де треба.
+# ─────────────────────────────────────────────
+permissions:
+  contents: read
+
+# ─────────────────────────────────────────────
+# JOBS
+# ─────────────────────────────────────────────
 jobs:
+  # ───────────────────────────────────────────
+  # JOB 1: build
+  # Запускається завжди — при push, PR, та тегу.
+  # Виконує: install → validate → lint → build → zip → upload artifacts
+  # ───────────────────────────────────────────
   build:
+    name: Build extension
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
+    steps:
+      # ── Крок 1: Checkout ──────────────────
+      # Клонує репозиторій у runner.
+      # fetch-depth: 0 потрібен якщо ти використовуєш
+      # git history (наприклад, для generate_release_notes).
+      # Для простого build можна fetch-depth: 1 (швидше),
+      # але 0 безпечніший для тегів.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ── Крок 2: Setup Node.js ─────────────
+      # Встановлює Node.js v22 (LTS) — така сама версія як у CI.
+      # ВАЖЛИВО: Локально у тебе Node 24, але CI/CD використовує 22.
+      # Це нормально — ES2020+ і твій код сумісний з обома.
+      # cache: 'npm' — вбудований кеш npm (через setup-node).
+      # Він кешує ~/.npm на основі package-lock.json.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "24"
+          cache: "npm"
 
+      # ── Крок 3: Cache node_modules ────────
+      # Явний кеш node_modules через actions/cache@v4.
+      # Це ДОДАТКОВО до cache: 'npm' вище.
+      # setup-node кешує ~/.npm (npm cache), але node_modules
+      # все одно потрібно відновлювати через npm ci.
+      # actions/cache кешує саму папку node_modules — це
+      # пришвидшує npm ci з ~30s до ~3s на cache hit.
+      #
+      # key: хеш від package-lock.json — якщо lockfile змінився,
+      # кеш інвалідується і node_modules встановлюється заново.
+      # restore-keys: дозволяє використати старий кеш як fallback
+      # якщо точного збігу нема (часткове відновлення).
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      # ── Крок 4: Install dependencies ──────
+      # npm ci — суворіший за npm install:
+      #   - Читає тільки package-lock.json (не package.json)
+      #   - Видаляє node_modules перед встановленням
+      #   - Не оновлює lockfile — ідеально для CI
+      # if: steps.cache-node-modules.outputs.cache-hit != 'true'
+      # Пропускає install якщо node_modules є в кеші (cache hit).
       - name: Install dependencies
-        run: npm install
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
 
-      - name: Lint
+      # ── Крок 5: Validate manifest ─────────
+      # Запускає scripts/validate-manifest.js через npm run validate.
+      # Перевіряє manifest.chrome.json на коректність структури,
+      # обов'язкові поля (name, version, manifest_version, etc.),
+      # наявність усіх referenced файлів.
+      # Якщо validate упаде — наступні кроки не виконуються.
+      - name: Validate manifest
+        run: npm run validate
+
+      # ── Крок 6: Lint ──────────────────────
+      # ESLint перевіряє весь JS код у src/ та scripts/.
+      # eslint.config.js визначає правила.
+      # Якщо є ESLint errors — build зупиняється тут.
+      # Warnings не зупиняють build (залежить від конфігу).
+      - name: Lint source code
         run: npm run lint
+
+      # ── Крок 7: Build all browsers ────────
+      # npm run build запускає build для Chrome + Firefox + Edge.
+      # Результат: dist/chrome/, dist/firefox/, dist/edge/
+      # build.js копіює src → dist/{browser}/,
+      # мінімізує JS через esbuild,
+      # обробляє маніфест для кожного браузера.
+      - name: Build all browsers
+        run: npm run build
+
+      # ── Крок 8: Create ZIP archives ───────
+      # npm run zip пакує кожну dist/{browser}/ папку в ZIP.
+      # Результат:
+      #   dist/printAIchat-chrome.zip
+      #   dist/printAIchat-firefox.zip
+      #   dist/printAIchat-edge.zip
+      # Файли ZIP потрібні для:
+      #   - Chrome Web Store (тільки .zip)
+      #   - Firefox Add-ons (тільки .zip)
+      #   - GitHub Release assets
+      - name: Create ZIP archives
+        run: npm run zip
+
+      # ── Крок 9: Upload Chrome artifact ────
+      # Зберігає ZIP як artifact у GitHub Actions.
+      # Artifacts зберігаються 90 днів за замовчуванням.
+      # Їх можна скачати з GitHub UI або через GitHub CLI.
+      #
+      # ПІДВОДНИЙ КАМІНЬ: path має вказувати точний файл.
+      # Якщо dist/ немає або файл не створився —
+      # upload-artifact впаде з "No files were found with
+      # the provided path". Саме тому крок zip іде раніше.
+      #
+      # if-no-files-found: error — явно падаємо якщо файл відсутній.
+      # retention-days: 30 — скорочуємо до 30 днів (достатньо для CI).
+      - name: Upload Chrome artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: printAIchat-chrome
+          path: dist/printAIchat-chrome.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      # ── Крок 10: Upload Firefox artifact ──
+      - name: Upload Firefox artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: printAIchat-firefox
+          path: dist/printAIchat-firefox.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      # ── Крок 11: Upload Edge artifact ─────
+      - name: Upload Edge artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: printAIchat-edge
+          path: dist/printAIchat-edge.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  # ───────────────────────────────────────────
+  # JOB 2: release
+  # Запускається ТІЛЬКИ при push тегу v*.*.*
+  # Залежить від успішного завершення job build.
+  # Створює GitHub Release з трьома ZIP файлами.
+  # ───────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    # Цей job запускається тільки якщо:
+    # 1. Job build успішно завершився (needs: build)
+    # 2. Поточний event — push тегу (startsWith 'refs/tags/')
+    #
+    # ПІДВОДНИЙ КАМІНЬ: Без умови if, release запускався б
+    # при будь-якому push у main/develop (якщо build пройшов).
+    # Нам потрібно тільки при тегах.
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+
+    # Розширені дозволи для цього job.
+    # contents: write — потрібно для:
+    #   - Створення GitHub Release (POST /repos/.../releases)
+    #   - Завантаження assets до Release
+    # Мінімальні права — тільки те що треба.
+    permissions:
+      contents: write
+
+    steps:
+      # ── Крок 1: Checkout ──────────────────
+      # Потрібен для softprops/action-gh-release
+      # (читає git history для generate_release_notes).
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ── Крок 2: Download Chrome artifact ──
+      # Завантажує artifact збережений job build.
+      # name має точно співпадати з name у upload-artifact.
+      # path: ./artifacts/chrome — локальна папка де зберегти файл.
+      #
+      # ПІДВОДНИЙ КАМІНЬ: download-artifact@v4 завантажує
+      # artifact у вказану path як папку, не файл.
+      # Тобто ./artifacts/chrome/printAIchat-chrome.zip — правильний шлях.
+      - name: Download Chrome artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: printAIchat-chrome
+          path: ./artifacts/chrome
+
+      # ── Крок 3: Download Firefox artifact ─
+      - name: Download Firefox artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: printAIchat-firefox
+          path: ./artifacts/firefox
+
+      # ── Крок 4: Download Edge artifact ────
+      - name: Download Edge artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: printAIchat-edge
+          path: ./artifacts/edge
+
+      # ── Крок 5: Create GitHub Release ─────
+      # softprops/action-gh-release@v2 — популярна action для releases.
+      # Альтернатива: gh release create (GitHub CLI) — але action зручніша.
+      #
+      # tag_name: ${{ github.ref_name }}
+      #   — автоматично бере ім'я тегу (наприклад v1.0.0).
+      #   github.ref = 'refs/tags/v1.0.0'
+      #   github.ref_name = 'v1.0.0' (коротка форма)
+      #
+      # generate_release_notes: true
+      #   — GitHub автоматично генерує notes з commit history
+      #   та merged PR між попереднім тегом і поточним.
+      #   Для цього потрібен fetch-depth: 0 у checkout.
+      #
+      # files: — список файлів які стануть Release assets.
+      #   Шляхи відповідають де download-artifact зберіг файли.
+      #
+      # ПІДВОДНИЙ КАМІНЬ: GITHUB_TOKEN автоматично доступний
+      # у всіх GitHub Actions — не треба додавати в Secrets.
+      # Але job permissions: contents: write — обов'язкові.
+      # Без них action впаде з 403 Forbidden.
+      #
+      # draft: false — Release одразу публічний (не чернетка).
+      # prerelease: false — не позначати як pre-release.
+      # Якщо тег містить '-beta', '-rc', '-alpha' —
+      # можна додати логіку: contains(github.ref, '-beta')
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          files: |
+            ./artifacts/chrome/printAIchat-chrome.zip
+            ./artifacts/firefox/printAIchat-firefox.zip
+            ./artifacts/edge/printAIchat-edge.zip
+
+# .github/workflows/build.yml
+# name: Build
+
+# on:
+#   push:
+#     branches: [main, develop]
+#   pull_request:
+#     branches: [main]
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: "24"
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       - name: Lint
+#         run: npm run lint
