@@ -29,6 +29,16 @@ on:
       - main
 
 # ─────────────────────────────────────────────
+# ЗМІННА СЕРЕДОВИЩА — Node 24 для actions
+# Змушує actions/checkout та actions/setup-node
+# використовувати Node.js 24 замість deprecated Node 20.
+# GitHub зробить це примусово з червня 2026.
+# Встановлюємо зараз щоб позбутися warning.
+# ─────────────────────────────────────────────
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# ─────────────────────────────────────────────
 # ГЛОБАЛЬНІ ДОЗВОЛИ
 # За замовчуванням contents: read.
 # Job release потребує contents: write для
