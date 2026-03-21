@@ -178,13 +178,13 @@ jobs:
           retention-days: 30
 
       # ── Крок 10: Upload Firefox artifact ──
-      - name: Upload Firefox artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: printAIchat-firefox
-          path: dist/printAIchat-firefox.zip
-          if-no-files-found: error
-          retention-days: 30
+      # - name: Upload Firefox artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: printAIchat-firefox
+      #     path: dist/printAIchat-firefox.zip
+      #     if-no-files-found: error
+      #     retention-days: 30
 
       # ── Крок 11: Upload Edge artifact ─────
       - name: Upload Edge artifact
@@ -247,11 +247,11 @@ jobs:
           path: ./artifacts/chrome
 
       # ── Крок 3: Download Firefox artifact ─
-      - name: Download Firefox artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: printAIchat-firefox
-          path: ./artifacts/firefox
+      # - name: Download Firefox artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: printAIchat-firefox
+      #     path: ./artifacts/firefox
 
       # ── Крок 4: Download Edge artifact ────
       - name: Download Edge artifact
@@ -296,8 +296,8 @@ jobs:
           prerelease: false
           files: |
             ./artifacts/chrome/printAIchat-chrome.zip
-            ./artifacts/firefox/printAIchat-firefox.zip
             ./artifacts/edge/printAIchat-edge.zip
+          # ./artifacts/firefox/printAIchat-firefox.zip
 
 # .github/workflows/build.yml
 # name: Build

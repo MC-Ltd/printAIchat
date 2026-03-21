@@ -8,10 +8,10 @@
     "dev": "node scripts/build.js --watch --browser=chrome",
     "build": "node scripts/validate-manifest.js && node scripts/build.js --browser=all",
     "build:chrome": "node scripts/validate-manifest.js && node scripts/build.js --browser=chrome",
-    "build:firefox": "node scripts/validate-manifest.js && node scripts/build.js --browser=firefox",
     "build:edge": "node scripts/validate-manifest.js && node scripts/build.js --browser=edge",
     "zip": "node scripts/validate-manifest.js && node scripts/build.js --browser=all --zip",
     "zip:chrome": "node scripts/validate-manifest.js && node scripts/build.js --browser=chrome --zip",
+    "zip:edge": "node scripts/validate-manifest.js && node scripts/build.js --browser=edge --zip",
     "validate": "node scripts/validate-manifest.js",
     "icons": "node scripts/generate-icons.js",
     "lint": "eslint src/ scripts/"
