@@ -1,27 +1,3 @@
 # docs/_config.yml
 title: printAIchat
 description: Browser extension for clean AI chat printing
-```
-
-### Крок 2 — Увімкнути GitHub Pages
-
-1. Відкрий репозиторій `printAIchat` на GitHub
-2. **Settings** → ліве меню → **Pages**
-3. Під **Source** обери: `Deploy from a branch`
-4. Branch: `main`, Folder: `/docs`
-5. Натисни **Save**
-6. Через 1–3 хвилини сайт буде доступний за адресою:
-   `https://mc-ltd.github.io/printAIchat/`
-
-Privacy Policy буде доступна за адресою:
-`https://mc-ltd.github.io/printAIchat/privacy.html`
-
-> **Примітка:** Chrome Web Store та Edge Add-ons приймають URL з `.html` розширенням. Якщо хочеш чистий URL `/privacy` без розширення — потрібен додатковий `privacy/index.html` або налаштування Jekyll.
-
-### Крок 3 — Варіант з чистим URL `/privacy`
-
-Замість `docs/privacy.html` створи:
-```
-docs/
-└── privacy/
-    └── index.html    # той самий вміст Privacy Policy
