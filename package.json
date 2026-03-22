@@ -1,6 +1,6 @@
 {
   "name": "printaichat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Browser extension for clean AI chat printing",
   "private": true,
   "type": "module",
@@ -14,7 +14,10 @@
     "zip:edge": "node scripts/validate-manifest.js && node scripts/build.js --browser=edge --zip",
     "validate": "node scripts/validate-manifest.js",
     "icons": "node scripts/generate-icons.js",
-    "lint": "eslint src/ scripts/"
+    "lint": "eslint src/ scripts/",
+    "version:patch": "node scripts/bump-version.js patch",
+    "version:minor": "node scripts/bump-version.js minor",
+    "version:major": "node scripts/bump-version.js major"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

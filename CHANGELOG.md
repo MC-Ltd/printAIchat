@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-06-15
+
+### Fixed
+
+- Виправлено відображення повідомлень ChatGPT при включеному темному режимі (#12)
+- Виправлено помилку парсингу для Claude.ai після оновлення їхнього UI (#15)
+
+### Changed
+
+- Оновлено правила для Gemini Advanced
+
+### Added
+
+- Підтримка нового сайту Grok (x.ai/grok)
+
+[1.0.1]: https://github.com/MC-Ltd/printAIchat/compare/v1.0.0...v1.0.1
+
 ## [1.0.0] - 2026-03-20
 
 ### Added
